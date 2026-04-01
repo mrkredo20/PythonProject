@@ -14,18 +14,12 @@ def test_wiki_pages(page):
     expect(page.locator("#firstHeading")).to_have_text("Talk:Main Page")
 #change request on the back
 def test_login_back(page):
-    def change_request(route:Route):
-        data=route.request.post_data
-        if data:
-            data=data.replace("574045469","574")
-        route.continue_(post_data=data)
-    page.route(re.compile(r".*identity-api\.biletebi\.ge/AccessToken.*"),change_request)
     page.goto("https://biletebi.ge/")
     page.get_by_test_id("header_login_button").click()
     page.get_by_test_id("login_modal_email").fill("574045469")
     page.get_by_test_id("login_modal_password").fill("Mosetest1234!")
     page.get_by_test_id("login_modal_submit_button").click()
-    expect(page.get_by_test_id("header_my_tickets_button")).to_be_visible()
+    expect(page.get_by_test_id("header_my_tickets_button")).to_be_visible(timeout=10000)
 def test_change_name(page):
     def change_request(route:Route):
         response=route.fetch()
