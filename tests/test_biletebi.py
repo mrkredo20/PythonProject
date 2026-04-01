@@ -1,12 +1,18 @@
-import HomePage
+import pytest
+from playwright.sync_api import expect
+
+from pages.home_page import HomePage
 
 
+@pytest.mark.smoke
+@pytest.mark.guest
 def test_search_event(page):
     home = HomePage(page)
 
     home.open()
-    home.search_event("concert")
+    home.search_event("Peggy Gou")
 
-    results = home.get_search_results()
+    result = home.get_search_results().first
 
-    assert results.count() > 0
+    expect(result).to_be_visible()
+    expect(result).to_have_text("Peggy Gou")

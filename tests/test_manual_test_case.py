@@ -9,6 +9,14 @@ STEPS = "{steps}"
 EXPECTED_RESULT = "{expected_result}"
 
 
+pytestmark = [
+    pytest.mark.guest,
+    pytest.mark.skip(
+        reason="Manual test case scaffold still contains placeholders and is not runnable yet."
+    ),
+]
+
+
 @pytest.mark.parametrize(
     "test_case_description, url, steps, expected_result",
     [
@@ -32,4 +40,3 @@ def test_manual_test_case_to_pom(
     manual_test_page.open(url)
     manual_test_page.perform_test_steps()
     manual_test_page.verify_expected_result()
-
