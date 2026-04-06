@@ -26,5 +26,10 @@ jobs:
           pip install -r requirements.txt
           playwright install chromium
 
-      - name: Run tests
-        run: pytest tests/ --tb=short
+      - name: Run tests (push: smoke, PR: full)
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            pytest -m smoke tests/ --tb=short
+          else
+            pytest tests/ --tb=short
+          fi

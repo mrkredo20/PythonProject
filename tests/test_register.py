@@ -46,6 +46,7 @@ def test_registration_with_already_existing_email_shows_error(register_page: Reg
         "BILETEBI_REGISTRATION_PASSWORD after the OTP-enabled flow is available."
     ),
 )
+@pytest.mark.smoke
 def test_registration_with_mismatched_passwords_shows_validation(register_page: RegisterPage) -> None:
     register_page.start_registration(NEW_REGISTRATION_EMAIL)
     register_page.expect_otp_step(NEW_REGISTRATION_EMAIL)
