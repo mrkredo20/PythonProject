@@ -2,9 +2,9 @@ name: Playwright Tests
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   test:
@@ -13,22 +13,24 @@ jobs:
       PYTHONPATH: .
       BILETEBI_EMAIL: ${{ secrets.BILETEBI_EMAIL }}
       BILETEBI_PASSWORD: ${{ secrets.BILETEBI_PASSWORD }}
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
           playwright install chromium
 
-      - name: Run tests (push: smoke, PR: full)
+      - name: "Run tests (push: smoke, PR: full)"
+        shell: bash
         run: |
-          if [ "${{ github.event_name }}" = "push" ]; then
+          if [[ "${{ github.event_name }}" == "push" ]]; then
             pytest -m smoke tests/ --tb=short
           else
             pytest tests/ --tb=short
