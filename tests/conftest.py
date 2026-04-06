@@ -17,6 +17,11 @@ ARTIFACTS_DIR = Path("test-artifacts")
 ENABLE_ARTIFACTS = os.getenv("ENABLE_ARTIFACTS", "").lower() in {"1", "true", "yes"}
 REPORT_PATH = Path("report.html")
 
+@pytest.fixture
+def open_home(page, base_url):
+    page.goto(base_url, wait_until="domcontentloaded")
+    page.wait_for_load_state("networkidle")
+    return page
 
 def _sanitize_nodeid(nodeid: str) -> str:
     return "".join(char if char.isalnum() or char in "-._" else "_" for char in nodeid)
