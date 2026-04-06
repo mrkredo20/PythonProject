@@ -3,10 +3,13 @@ from pathlib import Path
 import webbrowser
 
 import pytest
+from dotenv import load_dotenv
 from playwright.sync_api import Browser
 
 from pages.session_page import SessionPage
 
+
+load_dotenv()
 
 VALID_EMAIL = os.getenv("BILETEBI_EMAIL")
 VALID_PASSWORD = os.getenv("BILETEBI_PASSWORD")

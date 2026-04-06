@@ -9,6 +9,10 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      PYTHONPATH: .
+      BILETEBI_EMAIL: ${{ secrets.BILETEBI_EMAIL }}
+      BILETEBI_PASSWORD: ${{ secrets.BILETEBI_PASSWORD }}
     steps:
       - uses: actions/checkout@v3
 
