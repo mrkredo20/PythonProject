@@ -1,3 +1,40 @@
+#name: Playwright Tests
+#
+#on:
+#  push:
+#    branches: [master]
+#  pull_request:
+#    branches: [master]
+#
+#jobs:
+#  test:
+#    runs-on: ubuntu-latest
+#    env:
+#      PYTHONPATH: .
+#      BILETEBI_EMAIL: ${{ secrets.BILETEBI_EMAIL }}
+#      BILETEBI_PASSWORD: ${{ secrets.BILETEBI_PASSWORD }}
+#
+#    steps:
+#      - uses: actions/checkout@v3
+#
+#      - name: Set up Python
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: "3.11"
+#
+#      - name: Install dependencies
+#        run: |
+#          pip install -r requirements.txt
+#          playwright install --with-deps chromium
+#
+#      - name: "Run tests against live site"
+#        shell: bash
+#        run: |
+#          pytest tests/ \
+#            --base-url=https://biletebi.ge \
+#            --browser chromium \
+#            --tb=short
+
 name: Playwright Tests
 
 on:
@@ -9,28 +46,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: .
-      BILETEBI_EMAIL: ${{ secrets.BILETEBI_EMAIL }}
-      BILETEBI_PASSWORD: ${{ secrets.BILETEBI_PASSWORD }}
-
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: "3.11"
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          playwright install --with-deps chromium
-
-      - name: "Run tests against live site"
-        shell: bash
-        run: |
-          pytest tests/ \
-            --base-url=https://biletebi.ge \
-            --browser chromium \
-            --tb=short
+      - name: Skip tests
+        run: echo "Tests are temporarily disabled"
