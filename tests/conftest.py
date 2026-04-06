@@ -1,5 +1,6 @@
 import os
 from pathlib import Path
+import webbrowser
 
 import pytest
 from playwright.sync_api import Browser
@@ -11,6 +12,7 @@ VALID_EMAIL = os.getenv("BILETEBI_EMAIL")
 VALID_PASSWORD = os.getenv("BILETEBI_PASSWORD")
 ARTIFACTS_DIR = Path("test-artifacts")
 ENABLE_ARTIFACTS = os.getenv("ENABLE_ARTIFACTS", "").lower() in {"1", "true", "yes"}
+REPORT_PATH = Path("report.html")
 
 
 def _sanitize_nodeid(nodeid: str) -> str:
@@ -85,3 +87,9 @@ def capture_playwright_artifacts(request):
         context.tracing.stop(path=str(traces_dir / f"{node_name}.zip"))
     else:
         context.tracing.stop()
+
+
+def pytest_sessionfinish(session, exitstatus):
+    report_path = session.config.rootpath / REPORT_PATH
+    if report_path.exists():
+        webbrowser.open(report_path.resolve().as_uri())

@@ -17,7 +17,7 @@ class SessionPage:
         self.accept_cookies_button = page.get_by_test_id("accept_cookies")
 
     def open(self, path: str = "") -> None:
-        self.page.goto(f"{self.BASE_URL}{path}")
+        self.page.goto(f"{self.BASE_URL}{path}", wait_until="domcontentloaded")
 
     def accept_cookies_if_needed(self) -> None:
         if self.accept_cookies_button.count() and self.accept_cookies_button.first.is_visible():
@@ -50,14 +50,14 @@ class SessionPage:
         self.open_profile_menu()
         self.logout_button.click(force=True)
 
-    def expect_logged_out_state(self) -> None:
-        expect(self.login_trigger).to_be_visible(timeout=10000)
-        expect(self.profile_button).not_to_be_visible(timeout=10000)
+    def expect_logged_out_state(self, timeout: int = 3000) -> None:
+        expect(self.login_trigger).to_be_visible(timeout=timeout)
+        expect(self.profile_button).not_to_be_visible(timeout=timeout)
         assert self.get_auth_cookie_names() == []
 
     def open_protected_page(self) -> None:
         self.open(self.PROTECTED_PATH)
 
-    def expect_guest_on_protected_page(self) -> None:
-        expect(self.login_trigger).to_be_visible(timeout=10000)
+    def expect_guest_on_protected_page(self, timeout: int = 3000) -> None:
+        expect(self.login_trigger).to_be_visible(timeout=timeout)
         assert self.my_tickets_button.count() == 0

@@ -20,7 +20,7 @@ class RegisterPage:
         self.otp_inputs = [page.get_by_test_id(f"otp_{index}") for index in range(5)]
 
     def open(self) -> None:
-        self.page.goto(self.BASE_URL)
+        self.page.goto(self.BASE_URL, wait_until="domcontentloaded")
 
     def open_registration_modal(self) -> None:
         self.login_trigger.click()

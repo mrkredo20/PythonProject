@@ -8,7 +8,7 @@ class HomePage:
         self.page = page
 
     def open(self) -> None:
-        self.page.goto(self.BASE_URL)
+        self.page.goto(self.BASE_URL, wait_until="domcontentloaded")
 
     def search_event(self, text: str) -> None:
         search_input = self.page.get_by_test_id("header_search_input")

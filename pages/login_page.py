@@ -21,7 +21,7 @@ class LoginPage:
         self.validation_messages = page.locator(".text-danger")
 
     def open(self) -> None:
-        self.page.goto(self.BASE_URL)
+        self.page.goto(self.BASE_URL, wait_until="domcontentloaded")
 
     def open_login_modal(self) -> None:
         self.login_trigger.click()
