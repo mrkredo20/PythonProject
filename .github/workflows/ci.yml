@@ -25,13 +25,12 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
-          playwright install chromium
+          playwright install --with-deps chromium
 
-      - name: "Run tests (push: smoke, PR: full)"
+      - name: "Run tests against live site"
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "push" ]]; then
-            pytest -m smoke tests/ --tb=short
-          else
-            pytest tests/ --tb=short
-          fi
+          pytest tests/ \
+            --base-url=https://biletebi.ge \
+            --browser chromium \
+            --tb=short
