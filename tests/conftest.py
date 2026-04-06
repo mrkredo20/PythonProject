@@ -10,6 +10,7 @@ from pages.session_page import SessionPage
 VALID_EMAIL = os.getenv("BILETEBI_EMAIL")
 VALID_PASSWORD = os.getenv("BILETEBI_PASSWORD")
 ARTIFACTS_DIR = Path("test-artifacts")
+ENABLE_ARTIFACTS = os.getenv("ENABLE_ARTIFACTS", "").lower() in {"1", "true", "yes"}
 
 
 def _sanitize_nodeid(nodeid: str) -> str:
@@ -61,13 +62,18 @@ def capture_playwright_artifacts(request):
 
     page_fixture_name = "page" if "page" in request.fixturenames else "auth_page"
     page = request.getfixturevalue(page_fixture_name)
-    context = page.context
-
-    context.tracing.start(screenshots=True, snapshots=True, sources=True)
     yield
 
+    if not ENABLE_ARTIFACTS:
+        return
+
+    context = page.context
     failed = bool(getattr(request.node, "rep_call", None) and request.node.rep_call.failed)
     node_name = _sanitize_nodeid(request.node.nodeid)
+
+    if not hasattr(context, "_codex_tracing_started"):
+        context.tracing.start(screenshots=True, snapshots=True, sources=True)
+        setattr(context, "_codex_tracing_started", True)
 
     if failed:
         screenshots_dir = ARTIFACTS_DIR / "screenshots"

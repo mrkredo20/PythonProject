@@ -1,25 +1,26 @@
-```ts
-import { test, expect } from '@playwright/test';
-import axios from 'axios';
+# API Test Generator Prompt
 
-test('POST /api/login returns token', async () => {
-  const endpoint = '/api/login';
-  const requestBody = { username: 'test', password: 'pass' };
-  const expectedResponse = { token: 'abc123' };
+## Purpose:
+Use this prompt to generate API tests using Python + requests library.
 
-  try {
-    const response = await axios.post(endpoint, requestBody);
+## Prompt Template:
+"Generate a Python pytest test for the following API endpoint:
+- Endpoint: {endpoint}
+- Method: {method}
+- Request Body: {request_body}
+- Expected Status Code: {status_code}
+- Expected Response: {expected_response}
 
-    expect(response.status).toBe(200);
-    expect(response.data).toMatchObject(expectedResponse);
-  } catch (error: any) {
-    // Axios puts response details on error.response for non-2xx
-    if (error.response) {
-      throw new Error(
-        `Request failed with status ${error.response.status}: ${JSON.stringify(error.response.data)}`
-      );
-    }
-    throw error;
-  }
-});
-```
+Requirements:
+- Use Python requests library
+- Include status code assertion
+- Include response body validation
+- Include error handling
+- Follow AAA pattern (Arrange, Act, Assert)"
+
+## Example Usage:
+- Endpoint: https://biletebi.ge/api/login
+- Method: POST
+- Request Body: { "username": "test@mail.com", "password": "pass123" }
+- Expected Status Code: 200
+- Expected Response: { "token": "abc123" }
